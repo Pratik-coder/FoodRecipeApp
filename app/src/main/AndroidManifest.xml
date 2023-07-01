@@ -22,7 +22,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <!--
+
           <activity
             android:name=".MainActivity"
             android:exported="false">
@@ -30,7 +30,6 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        -->
         <activity
             android:name=".activity.RecipeActivity"
             android:exported="true">

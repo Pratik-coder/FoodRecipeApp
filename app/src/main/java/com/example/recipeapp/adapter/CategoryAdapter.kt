@@ -56,7 +56,7 @@ class CategoryAdapter (private var context: Context,private val categoryList:Lis
        fun onBind(categoryData: CategoryData) {
            binding.tvCategorylist.text=categoryData.strCategory
            val imageUrl=categoryData.strCategoryThumb
-           Glide.with(context).load(imageUrl).placeholder(R.drawable.ic_launcher_background).into(binding.ivCategory)
+           Glide.with(context).load(imageUrl).into(binding.ivCategory)
            itemView.setOnClickListener {
                listener.onCategoryClick(categoryData)
            }

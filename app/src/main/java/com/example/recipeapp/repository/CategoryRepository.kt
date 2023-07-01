@@ -47,34 +47,26 @@ class CategoryRepository()
              override fun onResponse(
                  call: Call<CategorResponse>,
                  response: Response<CategorResponse>
-             )
-             {
-                  if (response.isSuccessful)
-                  {
-                      val body=response.body()
-                      if (body!=null)
-                      {
-                          val foodCateoryList= mutableListOf<CategoryData>()
-                          body.categories.forEach {
-                          foodCateoryList.add(
-                              CategoryData(
-                              it.idCategory,
-                              it.strCategory,
-                              it.strCategoryThumb,
-                              it.strCategoryDescription
+             ) {
+                 if (response.isSuccessful) {
+                     val body = response.body()
+                     if (body != null) {
+                         val foodCateoryList = mutableListOf<CategoryData>()
+                         body.categories.forEach {
+                             foodCateoryList.add(
+                                 CategoryData(
+                                     it.idCategory,
+                                     it.strCategory,
+                                     it.strCategoryThumb,
+                                     it.strCategoryDescription
+                                 )
                              )
-                          )
-                          }
-                          categoryList.value=foodCateoryList
+                         }
+                         categoryList.value = foodCateoryList
 
-                      }
-
-                      /*else{
-                      }
-*/
-                  }
+                     }
+                 }
              }
-
              override fun onFailure(call: Call<CategorResponse>, t: Throwable) {
                 Constant.apiRequest=true
                 Constant.apiError=t.localizedMessage as String

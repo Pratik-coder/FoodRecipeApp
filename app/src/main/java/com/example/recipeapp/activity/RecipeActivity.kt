@@ -30,10 +30,9 @@ class RecipeActivity : AppCompatActivity(),View.OnClickListener{
 
     private lateinit var categoryViewModel: CategoryViewModel
     private val categoryRepository: CategoryRepository = CategoryRepository()
-    private lateinit var textViewNetworkStatus: TextView
     private lateinit var mAdapter: CategoryAdapter
     private lateinit var binding:ActivityRecipeBinding
-    private val categoryList=MutableLiveData<List<CategoryData>>()
+
 
 
 
@@ -80,7 +79,6 @@ class RecipeActivity : AppCompatActivity(),View.OnClickListener{
             Toast.makeText(this, getString(R.string.str_checkinternet), Toast.LENGTH_SHORT).show()
             binding.tvconnection.visibility= VISIBLE
         }
-
     }
 
 
@@ -97,19 +95,12 @@ class RecipeActivity : AppCompatActivity(),View.OnClickListener{
         mAdapter.setOnCategoryClickedListener(object :CategoryAdapter.OnItemClickListener
         {
             override fun onCategoryClick(categoryData: CategoryData) {
-              //  Log.d("TAG",categoryData.strCategory)
-                /*val intent=Intent(this@RecipeActivity,CategoryDetails::class.java)
+                val intent=Intent(this@RecipeActivity,CategoryDetails::class.java)
                 intent.putExtra("strCategory",categoryData.strCategory)
                 intent.putExtra("strCategoryThumb",categoryData.strCategoryThumb)
                 intent.putExtra("strCategoryDescription",categoryData.strCategoryDescription)
-                startActivity(intent)*/
-                val strCategoryId=categoryData.idCategory?:run {
-                    Toast.makeText(this@RecipeActivity,"Unable to launch Details",Toast.LENGTH_SHORT).show()
-                    return
-                }
-
-                val intent=CategoryDetails.getStartIntent(this@RecipeActivity,strCategoryId)
                 startActivity(intent)
+
             }
         })
     }

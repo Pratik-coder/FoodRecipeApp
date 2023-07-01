@@ -15,7 +15,7 @@ abstract class CategoryRoomDatabase:RoomDatabase()
 
     companion object
     {
-       // const val DATA_BASENAME="categories"
+
         @Volatile
         private var INSTANCE:CategoryRoomDatabase?=null
 

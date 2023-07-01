@@ -28,23 +28,9 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 class CategoryDetails : AppCompatActivity() {
+
     private lateinit var categoryDetailsBinding: ActivityCategoryDetailsBinding
-    private lateinit var categoryDetailsViewModel: CategoryDetailsViewModel
-    private val categoryRepository: CategoryRepository = CategoryRepository()
-    private lateinit var categoryData: CategoryData
 
-
-    /*@Inject
-     lateinit var viewModelFactory: CategoryDetailsViewModel.CategoryDetailsViewModelFactory
-
-
-     val categoryDetailsViewModel:CategoryDetailsViewModel by viewModels{
-      val idCategory=intent.extras?.getString(idCategory)
-        ?:throw IllegalArgumentException("idCategory must be non-null")
-        CategoryDetailsViewModel.provideFactory(viewModelFactory,idCategory)
-    }
-*/
-        @OptIn(ExperimentalCoroutinesApi::class)
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             categoryDetailsBinding = ActivityCategoryDetailsBinding.inflate(layoutInflater)
@@ -60,7 +46,7 @@ class CategoryDetails : AppCompatActivity() {
 
         private fun checkInternet()  {
             if (isNetworkAvailable()) {
-                initCategoryDetails()
+                setUI()
             } else {
                 Toast.makeText(this, getString(R.string.str_checkinternet), Toast.LENGTH_SHORT).show()
             }
@@ -71,35 +57,8 @@ class CategoryDetails : AppCompatActivity() {
             return networkConnection.isNetworkAvailable(this)
         }
 
-        private fun initCategoryDetails()
-        {
-            /*categoryDetailsViewModel.categoryData.apply {
-                categoryDetailsBinding.llContent.apply {
-                    tvCategoryName.text=strCategory
-                    tvCategoryDescription.text =strCategoryDescription
-                }
-                Glide.with(this@CategoryDetails).load(strCategoryThumb).into(categoryDetailsBinding.imageView)
-            }*/
-            categoryDetailsViewModel=ViewModelProvider(this,CategoryDetailsViewModelFactory(categoryRepository,
-                idCategory)).get(CategoryDetailsViewModel::class.java)
-
-            categoryDetailsViewModel.categoryData.apply {
-                categoryDetailsBinding.llContent.apply {
-                    tvCategoryName.text=strCategory
-                    tvCategoryDescription.text=strCategoryDescription
-                }
-                Glide.with(this@CategoryDetails).load(strCategoryThumb).into(categoryDetailsBinding.imageView)
-            }
-        }
-
-
-
-
-
-
-/* private fun setUI() {
+    private fun setUI() {
              val imageView = findViewById<ImageView>(R.id.imageView)
-             val Id = intent.extras?.getString(idCategory)
              val strCategoryThumb = intent.extras?.getString("strCategoryThumb")
              val strCategoryDescription = intent.extras?.getString("strCategoryDescription")
              val strCategory = intent.extras?.getString("strCategory")
@@ -107,17 +66,7 @@ class CategoryDetails : AppCompatActivity() {
              categoryDetailsBinding.llContent.tvCategoryDescription.text=strCategoryDescription
              Glide.with(this).load(strCategoryThumb).into(imageView)
          }
-     */
 
-
-
-        companion object {
-        private  const val idCategory: String = "ID"
-
-        fun getStartIntent(context: Context,strIdCategory:String)=Intent(context,CategoryDetails::class.java).apply {
-            putExtra(idCategory,strIdCategory)
-        }
-    }
 }
 
 
