@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".activity.RecipeActivity">
+
+
+    <TextView
+        android:id="@+id/tvconnection"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/str_checknet"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_textshape"
+       android:backgroundTint="@android:color/holo_blue_bright"
+        android:textColor="@color/black"/>
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvcategory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"/>
+
+
+</LinearLayout>

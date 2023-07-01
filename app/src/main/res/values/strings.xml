@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">RecipeApp</string>
+    <string name="str_checknet">No Connection</string>
+    <string name="str_cbackonline">Back Online</string>
+    <string name="str_exittitle">Exit</string>
+    <string name="str_exit_message">Are you sure you want to Exit ?</string>
+    <string name="str_yes">Yes</string>
+    <string name="str_no">No</string>
+    <string name="str_checkinternet">Please check your Internet</string>
+</resources>
