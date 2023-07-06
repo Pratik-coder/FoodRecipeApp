@@ -34,8 +34,6 @@ class RecipeActivity : AppCompatActivity(),View.OnClickListener{
     private lateinit var binding:ActivityRecipeBinding
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivityRecipeBinding.inflate(layoutInflater)
@@ -54,7 +52,6 @@ class RecipeActivity : AppCompatActivity(),View.OnClickListener{
     private fun initView() {
         categoryViewModel = ViewModelProvider(this, CategoryViewModelFactory(categoryRepository))
                 .get(CategoryViewModel::class.java)
-        binding.rvcategory.layoutManager = LinearLayoutManager(this)
         binding.tvconnection.setOnClickListener(this)
     }
 
@@ -64,11 +61,12 @@ class RecipeActivity : AppCompatActivity(),View.OnClickListener{
         {
             if (it != null) {
                 mAdapter = CategoryAdapter(this, it)
+                binding.rvcategory.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+                binding.rvcategory.setHasFixedSize(true)
                 binding.rvcategory.adapter = mAdapter
-
                 SendCategoryData()
             } else {
-                Toast.makeText(this, "Can't Upload the Recipe", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,getString(R.string.str_norecipes), Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -100,7 +98,6 @@ class RecipeActivity : AppCompatActivity(),View.OnClickListener{
                 intent.putExtra("strCategoryThumb",categoryData.strCategoryThumb)
                 intent.putExtra("strCategoryDescription",categoryData.strCategoryDescription)
                 startActivity(intent)
-
             }
         })
     }

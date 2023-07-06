@@ -37,6 +37,7 @@
                 android:transitionName="photo"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.5"
+                android:background="@color/white"
                 tools:src="@tools:sample/backgrounds/scenic" />
 
             <androidx.appcompat.widget.Toolbar
