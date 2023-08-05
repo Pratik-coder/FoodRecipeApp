@@ -18,19 +18,19 @@ import com.example.recipeapp.model.CategoryData
 
 
 
-class CategoryAdapter (private var context: Context,private val categoryList:List<CategoryData>):RecyclerView.Adapter<CategoryAdapter.ViewHolder>()
+class CategoryAdapter (private var context: Context,private val categoryList:List<CategoryData>,private val onItemClickListener:OnItemClickListener):RecyclerView.Adapter<CategoryAdapter.ViewHolder>()
 {
-    private lateinit var onItemClickListener:OnItemClickListener
+  //  private lateinit var onItemClickListener:OnItemClickListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val binding=LayoutCategorylistBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        return ViewHolder(binding, onItemClickListener)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int)
     {
-        holder.onBind(getItem(position))
+        holder.onBind(getItem(position),onItemClickListener)
     }
 
     override fun getItemCount(): Int {
@@ -40,20 +40,20 @@ class CategoryAdapter (private var context: Context,private val categoryList:Lis
 
     interface OnItemClickListener
     {
-        fun onCategoryClick(categoryData: CategoryData)
+        fun onCategoryClick(categoryData:CategoryData)
     }
 
-    fun setOnCategoryClickedListener(listener: OnItemClickListener)
+   /* fun setOnCategoryClickedListener(listener: OnItemClickListener)
     {
           this.onItemClickListener=listener
-    }
+    }*/
 
     private fun getItem(position: Int):CategoryData=categoryList[position]
 
-   inner class ViewHolder(private val binding: LayoutCategorylistBinding,val listener:OnItemClickListener):
+   inner class ViewHolder(private val binding: LayoutCategorylistBinding):
             RecyclerView.ViewHolder(binding.root)
    {
-       fun onBind(categoryData: CategoryData) {
+       fun onBind(categoryData: CategoryData,listener:OnItemClickListener) {
            binding.tvCategorylist.text=categoryData.strCategory
            val imageUrl=categoryData.strCategoryThumb
            Glide.with(context).load(imageUrl).into(binding.ivCategory)

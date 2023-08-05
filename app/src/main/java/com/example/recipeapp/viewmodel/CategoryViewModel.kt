@@ -15,7 +15,7 @@ class CategoryViewModel(private val categoryRepository: CategoryRepository): Vie
 
     fun getCategoryByList():MutableLiveData<List<CategoryData>>
     {
-       categoryLiveData=let{ categoryRepository.getCategoryList()}
+        categoryLiveData=categoryRepository.getCategoryList()
         return categoryLiveData as MutableLiveData<List<CategoryData>>
     }
 

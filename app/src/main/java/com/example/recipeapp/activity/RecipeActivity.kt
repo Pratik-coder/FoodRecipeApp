@@ -56,7 +56,7 @@ class RecipeActivity : AppCompatActivity(),View.OnClickListener{
     }
 
 
-    private fun observer() {
+   /* private fun observer() {
         categoryViewModel.getCategoryByList().observe(this, Observer<List<CategoryData>>
         {
             if (it != null) {
@@ -69,7 +69,7 @@ class RecipeActivity : AppCompatActivity(),View.OnClickListener{
                 Toast.makeText(this,getString(R.string.str_norecipes), Toast.LENGTH_SHORT).show()
             }
         })
-    }
+    }*/
 
 
     private fun checkInternet() {
@@ -85,10 +85,31 @@ class RecipeActivity : AppCompatActivity(),View.OnClickListener{
         return networkConnection.isNetworkAvailable(this)
     }
 
+    private fun observer()
+    {
+        categoryViewModel.getCategoryByList().observe(this, Observer<List<CategoryData>>
+        {
+            if (it!=null)
+            {
+                mAdapter= CategoryAdapter(this,it,object :CategoryAdapter.OnItemClickListener
+                {
+                    override fun onCategoryClick(categoryData: CategoryData) {
+                        val intent=Intent(this@RecipeActivity,CategoryDetails::class.java)
+                        intent.putExtra("strCategory",categoryData.strCategory)
+                        intent.putExtra("strCategoryThumb",categoryData.strCategoryThumb)
+                        intent.putExtra("strCategoryDescription",categoryData.strCategoryDescription)
+                        startActivity(intent)
+                    }
 
+                })
+                binding.rvcategory.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+                binding.rvcategory.adapter=mAdapter
+            }
+        })
+    }
     private fun getAllList() = categoryViewModel.getCategoryByList()
 
-    private fun SendCategoryData()
+  /*  private fun SendCategoryData()
     {
         mAdapter.setOnCategoryClickedListener(object :CategoryAdapter.OnItemClickListener
         {
@@ -97,10 +118,12 @@ class RecipeActivity : AppCompatActivity(),View.OnClickListener{
                 intent.putExtra("strCategory",categoryData.strCategory)
                 intent.putExtra("strCategoryThumb",categoryData.strCategoryThumb)
                 intent.putExtra("strCategoryDescription",categoryData.strCategoryDescription)
+                *//*val strCateogryId=categoryData.idCategory
+                val intent=CategoryDetails.getStartIntent(this@RecipeActivity,strCateogryId)*//*
                 startActivity(intent)
             }
         })
-    }
+    }*/
 
 
     override fun onBackPressed() {

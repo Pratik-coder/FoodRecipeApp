@@ -30,6 +30,13 @@ import javax.inject.Provider
 class CategoryDetails : AppCompatActivity() {
 
     private lateinit var categoryDetailsBinding: ActivityCategoryDetailsBinding
+    private lateinit var categoryData: CategoryData
+
+    private val viewModel by viewModels<CategoryViewModel> {
+        CategoryDetailsViewModelFactory(
+            CategoryRepository(),categoryData.idCategory
+        )
+    }
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -47,6 +54,7 @@ class CategoryDetails : AppCompatActivity() {
         private fun checkInternet()  {
             if (isNetworkAvailable()) {
                 setUI()
+               // initDetails()
             } else {
                 Toast.makeText(this, getString(R.string.str_checkinternet), Toast.LENGTH_SHORT).show()
             }
@@ -57,7 +65,7 @@ class CategoryDetails : AppCompatActivity() {
             return networkConnection.isNetworkAvailable(this)
         }
 
-    private fun setUI() {
+            private fun setUI() {
              val imageView = findViewById<ImageView>(R.id.imageView)
              val strCategoryThumb = intent.extras?.getString("strCategoryThumb")
              val strCategoryDescription = intent.extras?.getString("strCategoryDescription")
@@ -67,6 +75,24 @@ class CategoryDetails : AppCompatActivity() {
              Glide.with(this).load(strCategoryThumb).into(imageView)
          }
 
+    private fun initDetails()
+    {
+        viewModel.apply {
+            categoryDetailsBinding.llContent.apply {
+              tvCategoryName.text=categoryData.strCategory
+              tvCategoryDescription.text=categoryData.strCategoryDescription
+            }
+            Glide.with(this@CategoryDetails).load(categoryData.strCategoryThumb).into(categoryDetailsBinding.imageView)
+        }
+    }
+
+    companion object
+    {
+          private const val KEY_STRINGCATEGORY_ID="idCategory"
+
+           fun getStartIntent(context: Context,strCategoryId:String)=Intent(context,CategoryDetails::class.java).
+                   apply { putExtra(KEY_STRINGCATEGORY_ID,strCategoryId) }
+    }
 }
 
 
