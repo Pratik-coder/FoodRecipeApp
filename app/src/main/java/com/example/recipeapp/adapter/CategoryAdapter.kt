@@ -18,9 +18,8 @@ import com.example.recipeapp.model.CategoryData
 
 
 
-class CategoryAdapter (private var context: Context,private val categoryList:List<CategoryData>,private val onItemClickListener:OnItemClickListener):RecyclerView.Adapter<CategoryAdapter.ViewHolder>()
+class CategoryAdapter(private var context: Context,private val categoryList:List<CategoryData>,private val onItemClickListener:OnItemClickListener):RecyclerView.Adapter<CategoryAdapter.ViewHolder>()
 {
-  //  private lateinit var onItemClickListener:OnItemClickListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -37,16 +36,10 @@ class CategoryAdapter (private var context: Context,private val categoryList:Lis
         return categoryList.size
     }
 
-
     interface OnItemClickListener
     {
         fun onCategoryClick(categoryData:CategoryData)
     }
-
-   /* fun setOnCategoryClickedListener(listener: OnItemClickListener)
-    {
-          this.onItemClickListener=listener
-    }*/
 
     private fun getItem(position: Int):CategoryData=categoryList[position]
 

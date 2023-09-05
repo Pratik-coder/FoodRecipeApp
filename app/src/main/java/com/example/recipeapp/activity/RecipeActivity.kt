@@ -55,23 +55,6 @@ class RecipeActivity : AppCompatActivity(),View.OnClickListener{
         binding.tvconnection.setOnClickListener(this)
     }
 
-
-   /* private fun observer() {
-        categoryViewModel.getCategoryByList().observe(this, Observer<List<CategoryData>>
-        {
-            if (it != null) {
-                mAdapter = CategoryAdapter(this, it)
-                binding.rvcategory.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-                binding.rvcategory.setHasFixedSize(true)
-                binding.rvcategory.adapter = mAdapter
-                SendCategoryData()
-            } else {
-                Toast.makeText(this,getString(R.string.str_norecipes), Toast.LENGTH_SHORT).show()
-            }
-        })
-    }*/
-
-
     private fun checkInternet() {
         if (!isNetworkAvailable()) {
             Toast.makeText(this, getString(R.string.str_checkinternet), Toast.LENGTH_SHORT).show()
@@ -102,29 +85,13 @@ class RecipeActivity : AppCompatActivity(),View.OnClickListener{
                     }
 
                 })
-                binding.rvcategory.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+                val layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+                binding.rvcategory.layoutManager=layoutManager
                 binding.rvcategory.adapter=mAdapter
             }
         })
     }
     private fun getAllList() = categoryViewModel.getCategoryByList()
-
-  /*  private fun SendCategoryData()
-    {
-        mAdapter.setOnCategoryClickedListener(object :CategoryAdapter.OnItemClickListener
-        {
-            override fun onCategoryClick(categoryData: CategoryData) {
-                val intent=Intent(this@RecipeActivity,CategoryDetails::class.java)
-                intent.putExtra("strCategory",categoryData.strCategory)
-                intent.putExtra("strCategoryThumb",categoryData.strCategoryThumb)
-                intent.putExtra("strCategoryDescription",categoryData.strCategoryDescription)
-                *//*val strCateogryId=categoryData.idCategory
-                val intent=CategoryDetails.getStartIntent(this@RecipeActivity,strCateogryId)*//*
-                startActivity(intent)
-            }
-        })
-    }*/
-
 
     override fun onBackPressed() {
         AlertDialog.Builder(this)
