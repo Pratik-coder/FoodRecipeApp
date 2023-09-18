@@ -9,6 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.view.menu.MenuView.ItemView
 import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.recipeapp.R
@@ -18,7 +20,7 @@ import com.example.recipeapp.model.CategoryData
 
 
 
-class CategoryAdapter(private var context: Context,private val categoryList:List<CategoryData>,private val onItemClickListener:OnItemClickListener):RecyclerView.Adapter<CategoryAdapter.ViewHolder>()
+class CategoryAdapter:RecyclerView.Adapter<CategoryAdapter.ViewHolder>()
 {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,32 +31,46 @@ class CategoryAdapter(private var context: Context,private val categoryList:List
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int)
     {
-        holder.onBind(getItem(position),onItemClickListener)
+         holder.onBind(differ.currentList[position])
     }
 
     override fun getItemCount(): Int {
-        return categoryList.size
+      return differ.currentList.size
     }
 
-    interface OnItemClickListener
-    {
-        fun onCategoryClick(categoryData:CategoryData)
-    }
 
-    private fun getItem(position: Int):CategoryData=categoryList[position]
+
+
 
    inner class ViewHolder(private val binding: LayoutCategorylistBinding):
             RecyclerView.ViewHolder(binding.root)
    {
-       fun onBind(categoryData: CategoryData,listener:OnItemClickListener) {
+       fun onBind(categoryData: CategoryData) {
            binding.tvCategorylist.text=categoryData.strCategory
            val imageUrl=categoryData.strCategoryThumb
-           Glide.with(context).load(imageUrl).into(binding.ivCategory)
-           itemView.setOnClickListener {
-               listener.onCategoryClick(categoryData)
-           }
+           Glide.with(binding.root).load(imageUrl).into(binding.ivCategory)
        }
    }
+
+    private var onItemClickListener:((CategoryData)->Unit)?=null
+
+    fun setOnItemClickListener(listener:(CategoryData)->Unit)
+    {
+        onItemClickListener=listener
+    }
+
+    private val differCallback=object : DiffUtil.ItemCallback<CategoryData>()
+    {
+        override fun areItemsTheSame(oldItem: CategoryData, newItem: CategoryData): Boolean {
+            return oldItem.idCategory==newItem.idCategory
+        }
+
+        override fun areContentsTheSame(oldItem: CategoryData, newItem: CategoryData): Boolean {
+               return oldItem==newItem
+        }
+    }
+
+    val differ=AsyncListDiffer(this,differCallback)
 }
 
 

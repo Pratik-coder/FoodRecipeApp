@@ -1,17 +1,21 @@
 package com.example.recipeapp.activity
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.opengl.Visibility
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,72 +30,73 @@ import com.example.recipeapp.utils.NetworkConnection
 import com.example.recipeapp.viewmodel.CategoryViewModel
 import com.example.recipeapp.viewmodel.CategoryViewModelFactory
 
-class RecipeActivity : AppCompatActivity(),View.OnClickListener{
+
+class RecipeActivity : AppCompatActivity(){
 
     private lateinit var categoryViewModel: CategoryViewModel
-    private val categoryRepository: CategoryRepository = CategoryRepository()
+    private val categoryRepository=CategoryRepository()
     private lateinit var mAdapter: CategoryAdapter
     private lateinit var binding:ActivityRecipeBinding
+    private var progressDialog: ProgressDialog?=null
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivityRecipeBinding.inflate(layoutInflater)
         val view=binding.root
         setContentView(view)
-        initView()
-        observer()
-    }
+        val viewModelFactory=CategoryViewModelFactory(application,categoryRepository)
+        categoryViewModel=ViewModelProvider(this, viewModelFactory)[CategoryViewModel::class.java]
+        categoryViewModel.getCategories()
+        setUpRecyclerView()
 
-    override fun onStart() {
-        super.onStart()
-        checkInternet()
-    }
-
-
-    private fun initView() {
-        categoryViewModel = ViewModelProvider(this, CategoryViewModelFactory(categoryRepository))
-                .get(CategoryViewModel::class.java)
-        binding.tvconnection.setOnClickListener(this)
-    }
-
-    private fun checkInternet() {
-        if (!isNetworkAvailable()) {
-            Toast.makeText(this, getString(R.string.str_checkinternet), Toast.LENGTH_SHORT).show()
-            binding.tvconnection.visibility= VISIBLE
-        }
-    }
-
-
-    private fun isNetworkAvailable(): Boolean {
-        val networkConnection= NetworkConnection()
-        return networkConnection.isNetworkAvailable(this)
-    }
-
-    private fun observer()
-    {
-        categoryViewModel.getCategoryByList().observe(this, Observer<List<CategoryData>>
+        categoryViewModel.categoryList.observe(this,Observer
         {
-            if (it!=null)
+            response->
+            when(response)
             {
-                mAdapter= CategoryAdapter(this,it,object :CategoryAdapter.OnItemClickListener
+                is com.example.recipeapp.model.Result.Success->
                 {
-                    override fun onCategoryClick(categoryData: CategoryData) {
-                        val intent=Intent(this@RecipeActivity,CategoryDetails::class.java)
-                        intent.putExtra("strCategory",categoryData.strCategory)
-                        intent.putExtra("strCategoryThumb",categoryData.strCategoryThumb)
-                        intent.putExtra("strCategoryDescription",categoryData.strCategoryDescription)
-                        startActivity(intent)
+                    progressDialog=ProgressDialog(this)
+                    progressDialog!!.dismiss()
+                    response.data?.let {
+                        mAdapter.differ.submitList(it.categories.toList())
                     }
+                }
+               is com.example.recipeapp.model.Result.Error->
+               {
+                   progressDialog=ProgressDialog(this)
+                   progressDialog!!.dismiss()
+                   response.message?.let {
+                       Toast.makeText(this@RecipeActivity,"An Error occurred",Toast.LENGTH_SHORT).show()
+                   }
+               }
 
-                })
-                val layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-                binding.rvcategory.layoutManager=layoutManager
-                binding.rvcategory.adapter=mAdapter
+                is com.example.recipeapp.model.Result.Loading->
+                {
+                    if (progressDialog == null) {
+                        progressDialog = ProgressDialog(this)
+                        progressDialog!!.setMessage("Loading...")
+                        progressDialog!!.setCancelable(false)
+                    }
+                    progressDialog?.show()
+                }
             }
         })
     }
-    private fun getAllList() = categoryViewModel.getCategoryByList()
+
+
+
+    private fun setUpRecyclerView()
+    {
+        mAdapter= CategoryAdapter()
+        binding.rvcategory.apply {
+            adapter=mAdapter
+            layoutManager=LinearLayoutManager(this@RecipeActivity)
+        }
+    }
+
 
     override fun onBackPressed() {
         AlertDialog.Builder(this)
@@ -107,14 +112,5 @@ class RecipeActivity : AppCompatActivity(),View.OnClickListener{
                 dialogInterface.dismiss()
             }
             .show()
-    }
-
-   override fun onClick(view: View?) {
-          if (isNetworkAvailable())
-          {
-              observer()
-          }
-       binding.tvconnection.visibility= GONE
-
     }
 }

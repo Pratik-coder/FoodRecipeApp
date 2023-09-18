@@ -19,8 +19,6 @@ import com.example.recipeapp.databinding.ActivityRecipeBinding
 import com.example.recipeapp.model.CategoryData
 import com.example.recipeapp.repository.CategoryRepository
 import com.example.recipeapp.utils.NetworkConnection
-import com.example.recipeapp.viewmodel.CategoryDetailsViewModel
-import com.example.recipeapp.viewmodel.CategoryDetailsViewModelFactory
 import com.example.recipeapp.viewmodel.CategoryViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.net.IDN
@@ -32,11 +30,6 @@ class CategoryDetails : AppCompatActivity() {
     private lateinit var categoryDetailsBinding: ActivityCategoryDetailsBinding
     private lateinit var categoryData: CategoryData
 
-    private val viewModel by viewModels<CategoryViewModel> {
-        CategoryDetailsViewModelFactory(
-            CategoryRepository(),categoryData.idCategory
-        )
-    }
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -75,16 +68,7 @@ class CategoryDetails : AppCompatActivity() {
              Glide.with(this).load(strCategoryThumb).into(imageView)
          }
 
-    private fun initDetails()
-    {
-        viewModel.apply {
-            categoryDetailsBinding.llContent.apply {
-              tvCategoryName.text=categoryData.strCategory
-              tvCategoryDescription.text=categoryData.strCategoryDescription
-            }
-            Glide.with(this@CategoryDetails).load(categoryData.strCategoryThumb).into(categoryDetailsBinding.imageView)
-        }
-    }
+
 
     companion object
     {

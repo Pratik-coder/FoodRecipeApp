@@ -1,3 +1,4 @@
+/*
 
 
 
@@ -21,7 +22,8 @@ class CategoryDetailsViewModel @AssistedInject constructor(@Assisted private val
 {
    val categoryData=categoryRepository.getByCategoryId(strIdCategory)
 
-   /* @AssistedFactory
+   */
+/* @AssistedFactory
    interface CategoryDetailsViewModelFactory
     {
         fun create(idCategory:String):CategoryDetailsViewModel
@@ -43,8 +45,10 @@ class CategoryDetailsViewModel @AssistedInject constructor(@Assisted private val
 
             }
         }
-    }*/
+    }*//*
+
     }
 
 
 
+*/

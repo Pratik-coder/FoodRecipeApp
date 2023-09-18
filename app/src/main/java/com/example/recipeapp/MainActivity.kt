@@ -1,3 +1,4 @@
+/*
 package com.example.recipeapp
 
 import android.os.Build
@@ -52,24 +53,17 @@ class MainActivity : AppCompatActivity()
     {
         textViewNetworkStatus=findViewById(R.id.tv_connection)
         recyclerViewCategoryList=findViewById(R.id.rv_category)
-       /* factory= CategoryViewModelFactory(categoryRepository)
-        categoryViewModel=ViewModelProvider(this,factory)[CategoryViewModel::class.java]*/
+       */
+/* factory= CategoryViewModelFactory(categoryRepository)
+        categoryViewModel=ViewModelProvider(this,factory)[CategoryViewModel::class.java]*//*
+
         categoryViewModel=ViewModelProviders.of(this,CategoryViewModelFactory(categoryRepository)).get(CategoryViewModel::class.java)
     }
 
-    private fun observer()
-    {
-        categoryViewModel.getAllCategoryList(this)?.observe(this,Observer<List<CategoryData>>
-        {
-            if (it!=null) {
-                recyclerViewCategoryList.adapter=categoryAdapter
-            } else {
-                Toast.makeText(this,"Cant upload the categories !! ",Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
 
-    /*private fun checkNetwork():Boolean
+
+    */
+/*private fun checkNetwork():Boolean
     {
         netWorkConnection.getNetwork(this)
         return isConnected
@@ -90,7 +84,8 @@ class MainActivity : AppCompatActivity()
     }
 
 
-*/
+*//*
+
     private fun getAllList()= categoryViewModel.getCategoryByList()
 
 
@@ -112,4 +107,4 @@ class MainActivity : AppCompatActivity()
                }
                .show()
     }
-}
+}*/
