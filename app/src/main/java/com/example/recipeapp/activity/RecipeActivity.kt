@@ -37,8 +37,7 @@ class RecipeActivity : AppCompatActivity(){
     private val categoryRepository=CategoryRepository()
     private lateinit var mAdapter: CategoryAdapter
     private lateinit var binding:ActivityRecipeBinding
-    private var progressDialog: ProgressDialog?=null
-
+    var progressDialog:ProgressDialog?=null
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,32 +55,31 @@ class RecipeActivity : AppCompatActivity(){
             response->
             when(response)
             {
+                is com.example.recipeapp.model.Result.Loading->
+                {
+                    if(progressDialog==null)
+                    {
+                            progressDialog = ProgressDialog(this)
+                            progressDialog!!.setMessage("Loading...")
+                            progressDialog!!.setCancelable(false)
+                            progressDialog!!.show()
+                    }
+                }
                 is com.example.recipeapp.model.Result.Success->
                 {
-                    progressDialog=ProgressDialog(this)
-                    progressDialog!!.dismiss()
-                    response.data?.let {
+                        progressDialog?.dismiss()
+                        response.data?.let {
                         mAdapter.differ.submitList(it.categories.toList())
-                    }
+                         }
                 }
                is com.example.recipeapp.model.Result.Error->
                {
-                   progressDialog=ProgressDialog(this)
-                   progressDialog!!.dismiss()
+
+                   progressDialog?.dismiss()
                    response.message?.let {
                        Toast.makeText(this@RecipeActivity,"An Error occurred",Toast.LENGTH_SHORT).show()
                    }
                }
-
-                is com.example.recipeapp.model.Result.Loading->
-                {
-                    if (progressDialog == null) {
-                        progressDialog = ProgressDialog(this)
-                        progressDialog!!.setMessage("Loading...")
-                        progressDialog!!.setCancelable(false)
-                    }
-                    progressDialog?.show()
-                }
             }
         })
     }
@@ -94,6 +92,8 @@ class RecipeActivity : AppCompatActivity(){
         binding.rvcategory.apply {
             adapter=mAdapter
             layoutManager=LinearLayoutManager(this@RecipeActivity)
+            mAdapter.setOnItemClickListener {
+            }
         }
     }
 

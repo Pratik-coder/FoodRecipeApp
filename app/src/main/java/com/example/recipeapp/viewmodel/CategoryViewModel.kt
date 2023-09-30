@@ -30,7 +30,7 @@ class CategoryViewModel(private val app:Application, private val categoryReposit
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun getCategories()=viewModelScope.launch {
-        getAllCategory() }
+        getAllCategory()}
 
 
      @RequiresApi(Build.VERSION_CODES.M)

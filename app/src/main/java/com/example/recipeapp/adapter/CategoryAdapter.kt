@@ -39,9 +39,6 @@ class CategoryAdapter:RecyclerView.Adapter<CategoryAdapter.ViewHolder>()
     }
 
 
-
-
-
    inner class ViewHolder(private val binding: LayoutCategorylistBinding):
             RecyclerView.ViewHolder(binding.root)
    {
@@ -49,6 +46,9 @@ class CategoryAdapter:RecyclerView.Adapter<CategoryAdapter.ViewHolder>()
            binding.tvCategorylist.text=categoryData.strCategory
            val imageUrl=categoryData.strCategoryThumb
            Glide.with(binding.root).load(imageUrl).into(binding.ivCategory)
+           binding.cardView.setOnClickListener {
+               onItemClickListener?.let {it(categoryData)}
+           }
        }
    }
 
