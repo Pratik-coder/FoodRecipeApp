@@ -39,6 +39,7 @@ class RecipeActivity : AppCompatActivity(){
     private lateinit var binding:ActivityRecipeBinding
     var progressDialog:ProgressDialog?=null
 
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +58,7 @@ class RecipeActivity : AppCompatActivity(){
             {
                 is com.example.recipeapp.model.Result.Loading->
                 {
-                    if(progressDialog==null)
+                   if(progressDialog==null)
                     {
                             progressDialog = ProgressDialog(this)
                             progressDialog!!.setMessage("Loading...")
@@ -69,7 +70,7 @@ class RecipeActivity : AppCompatActivity(){
                 {
                         progressDialog?.dismiss()
                         response.data?.let {
-                        mAdapter.differ.submitList(it.categories.toList())
+                        mAdapter.differ.submitList(it.categories?.toList())
                          }
                 }
                is com.example.recipeapp.model.Result.Error->
@@ -92,8 +93,6 @@ class RecipeActivity : AppCompatActivity(){
         binding.rvcategory.apply {
             adapter=mAdapter
             layoutManager=LinearLayoutManager(this@RecipeActivity)
-            mAdapter.setOnItemClickListener {
-            }
         }
     }
 

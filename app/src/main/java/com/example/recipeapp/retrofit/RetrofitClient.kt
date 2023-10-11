@@ -11,19 +11,19 @@ object RetrofitClient
 {
     fun getInstance():Retrofit
     {
-        var mHttpLoggingInterceptor=HttpLoggingInterceptor()
+       /* var mHttpLoggingInterceptor=HttpLoggingInterceptor()
            .setLevel(HttpLoggingInterceptor.Level.BODY)
 
-     // mHttpLoggingInterceptor.level=if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+        mHttpLoggingInterceptor.level=if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
 
         var mOkHttpClient=OkHttpClient
             .Builder().addInterceptor(mHttpLoggingInterceptor)
-            .build()
+            .build()*/
 
         var retrofit:Retrofit=Retrofit.Builder()
             .baseUrl(Constant.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(mOkHttpClient)
+          //  .client(mOkHttpClient)
             .build()
         return retrofit
     }

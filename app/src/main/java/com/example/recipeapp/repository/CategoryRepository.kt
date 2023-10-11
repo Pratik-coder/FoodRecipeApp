@@ -11,7 +11,6 @@ import com.example.recipeapp.model.CategorResponse
 import com.example.recipeapp.model.CategoryData
 import com.example.recipeapp.remoteapi.CategoryApi
 import com.example.recipeapp.retrofit.RetrofitClient
-import com.example.recipeapp.roomdatabase.CategoryRoomDatabase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

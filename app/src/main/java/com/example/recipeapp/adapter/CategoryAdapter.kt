@@ -43,8 +43,8 @@ class CategoryAdapter:RecyclerView.Adapter<CategoryAdapter.ViewHolder>()
             RecyclerView.ViewHolder(binding.root)
    {
        fun onBind(categoryData: CategoryData) {
-           binding.tvCategorylist.text=categoryData.strCategory
-           val imageUrl=categoryData.strCategoryThumb
+           binding.tvCategorylist.text= categoryData.strCategory!!
+           val imageUrl=categoryData.strCategoryThumb!!
            Glide.with(binding.root).load(imageUrl).into(binding.ivCategory)
            binding.cardView.setOnClickListener {
                onItemClickListener?.let {it(categoryData)}

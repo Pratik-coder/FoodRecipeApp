@@ -16,7 +16,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.recipeapp.model.CategorResponse
 import com.example.recipeapp.model.CategoryData
 import com.example.recipeapp.repository.CategoryRepository
-import com.example.recipeapp.utils.NetworkConnection
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException

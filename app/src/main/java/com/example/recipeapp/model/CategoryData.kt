@@ -5,12 +5,22 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.recipeapp.constants.Constant
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
-@Entity(tableName = Constant.DATA_BASENAME)
+
 data class CategoryData(
- @PrimaryKey
-@SerializedName("idCategory") var idCategory:String,@SerializedName("strCategory") var strCategory:String,
-@SerializedName("strCategoryThumb") var strCategoryThumb:String,@SerializedName("strCategoryDescription")var strCategoryDescription:String
+@SerializedName("idCategory")
+@Expose
+var idCategory:String?=null,
+@SerializedName("strCategory")
+@Expose
+var strCategory:String?=null,
+@SerializedName("strCategoryThumb")
+@Expose
+var strCategoryThumb:String?=null,
+@SerializedName("strCategoryDescription")
+@Expose
+var strCategoryDescription:String?=null
 )
