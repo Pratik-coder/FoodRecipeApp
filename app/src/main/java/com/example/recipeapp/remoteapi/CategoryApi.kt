@@ -8,6 +8,6 @@ import retrofit2.http.GET
 
 interface CategoryApi
 {
-   @GET("categories.php")
+   @GET("/api/json/v1/1/categories.php")
    suspend fun getAllCategoriesList():Response<CategorResponse>
 }
