@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.recipeapp.constants.Constant
 import com.example.recipeapp.model.CategorResponse
 import com.example.recipeapp.model.CategoryData
+import com.example.recipeapp.model.MealResponse
 import com.example.recipeapp.remoteapi.CategoryApi
 import com.example.recipeapp.retrofit.RetrofitClient
 import retrofit2.Call
@@ -22,5 +23,15 @@ class CategoryRepository
        {
            return RetrofitClient.getInstance().create(CategoryApi::class.java).getAllCategoriesList()
        }
+
+    suspend fun getRandomRecipeData():Response<MealResponse>
+    {
+        return RetrofitClient.getInstance().create(CategoryApi::class.java).getRandomRecipes()
+    }
+
+    suspend fun getRecipeBySearch(strQuery:String):Response<MealResponse>
+    {
+        return RetrofitClient.getInstance().create(CategoryApi::class.java).searchRecipe(strQuery)
+    }
 }
 

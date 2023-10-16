@@ -1,3 +1,4 @@
+/*
 package com.example.recipeapp.activity
 
 import android.app.Activity
@@ -112,4 +113,4 @@ class RecipeActivity : AppCompatActivity(){
             }
             .show()
     }
-}
+}*/

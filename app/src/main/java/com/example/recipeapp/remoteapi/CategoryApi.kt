@@ -3,11 +3,19 @@ package com.example.recipeapp.remoteapi
 import android.telecom.Call
 import com.example.recipeapp.model.CategorResponse
 import com.example.recipeapp.model.CategoryData
+import com.example.recipeapp.model.MealResponse
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface CategoryApi
 {
    @GET("/api/json/v1/1/categories.php")
    suspend fun getAllCategoriesList():Response<CategorResponse>
+
+   @GET("/api/json/v1/1/random.php")
+   suspend fun getRandomRecipes():Response<MealResponse>
+
+   @GET("api/json/v1/1/search.php")
+   suspend fun searchRecipe(@Query ("s") strQuery:String):Response<MealResponse>
 }

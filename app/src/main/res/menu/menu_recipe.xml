@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/nav_category"
+        android:title="@string/str_category"/>
+
+    <item
+        android:id="@+id/nav_random"
+        android:title="@string/str_random"/>
+
+    <item
+        android:id="@+id/nav_search"
+        android:title="@string/str_search"/>
+
+</menu>
