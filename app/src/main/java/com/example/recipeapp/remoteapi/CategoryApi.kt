@@ -18,4 +18,7 @@ interface CategoryApi
 
    @GET("api/json/v1/1/search.php")
    suspend fun searchRecipe(@Query ("s") strQuery:String):Response<MealResponse>
+
+   @GET("api/json/v1/1/lookup.php")
+   suspend fun getRecipeById(@Query("i") recipeId:String):Response<MealResponse>
 }

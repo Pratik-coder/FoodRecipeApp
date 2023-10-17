@@ -33,5 +33,10 @@ class CategoryRepository
     {
         return RetrofitClient.getInstance().create(CategoryApi::class.java).searchRecipe(strQuery)
     }
+
+    suspend fun getRecipeDetailsById(strRecipeId:String):Response<MealResponse>
+    {
+        return RetrofitClient.getInstance().create(CategoryApi::class.java).getRecipeById(strRecipeId)
+    }
 }
 

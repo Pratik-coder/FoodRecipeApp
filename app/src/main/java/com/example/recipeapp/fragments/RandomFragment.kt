@@ -89,7 +89,7 @@ class RandomFragment : Fragment() {
     {
         Glide.with(binding.root).load(mealData?.strMealThumb).into(binding.mealImage)
         binding.mealText.text=mealData?.strMeal
-        binding.recipeIngredient.text=mealData?.let { viewModel .getIngredients(mealData)}
+        binding.recipeIngredient.text=mealData?.let { viewModel .getIngredients(it)}
         binding.recipeInstruction.text=mealData?.strInstructions
     }
 }

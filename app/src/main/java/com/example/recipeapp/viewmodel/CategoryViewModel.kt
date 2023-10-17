@@ -29,7 +29,8 @@ class CategoryViewModel(private val app:Application, private val categoryReposit
     val categoryList=MutableLiveData<com.example.recipeapp.model.Result<CategorResponse>>()
     val randomRecipe=MutableLiveData<com.example.recipeapp.model.Result<MealResponse>>()
     val searchRecipeList=MutableLiveData<com.example.recipeapp.model.Result<MealResponse>>()
-    private val context:Context=app.applicationContext
+    val recipeDeatils=MutableLiveData<com.example.recipeapp.model.Result<MealResponse>>()
+
 
 
 
@@ -42,6 +43,10 @@ class CategoryViewModel(private val app:Application, private val categoryReposit
 
     fun getRecipeBySearch(recipeName:String)=viewModelScope.launch {
         getRecipeByFilter(recipeName)
+    }
+
+    fun getRecipeDetails(recipeId:String)=viewModelScope.launch {
+        getRecipeById(recipeId)
     }
 
 
@@ -118,6 +123,30 @@ class CategoryViewModel(private val app:Application, private val categoryReposit
         }
     }
 
+    private suspend fun getRecipeById(strRecipeId:String)
+    {
+        recipeDeatils.postValue(com.example.recipeapp.model.Result.Loading())
+        try {
+             if (hasInternetConnection())
+             {
+                 val response=categoryRepository.getRecipeDetailsById(strRecipeId)
+                 recipeDeatils.postValue(handleRecipeIdResponse(response=response))
+             }
+            else
+             {
+                 recipeDeatils.postValue(com.example.recipeapp.model.Result.Error(message = "No Network"))
+             }
+        }
+        catch (t:Throwable)
+        {
+            when(t)
+            {
+                is IOException->recipeDeatils.postValue(com.example.recipeapp.model.Result.Error(message = "Network Error"))
+                else->recipeDeatils.postValue(com.example.recipeapp.model.Result.Error(message = "An Unexpected Error"))
+            }
+        }
+    }
+
     private fun hasInternetConnection(): Boolean {
         val connectivityManager = getApplication<RecipeApplication>().getSystemService(
             Context.CONNECTIVITY_SERVICE
@@ -146,18 +175,6 @@ class CategoryViewModel(private val app:Application, private val categoryReposit
         return false
     }
 
-     /*@RequiresApi(Build.VERSION_CODES.M)
-     private fun checkNetworkConnection():Boolean
-     {
-         val connectivityManager=context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-         val network=connectivityManager.activeNetwork
-         val networkCapabilities=connectivityManager.getNetworkCapabilities(network)
-
-             return networkCapabilities!=null && (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI))||
-                     (networkCapabilities!!.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR))
-
-     }
-*/
     private fun handleCategoryResponse(response:Response<CategorResponse>):com.example.recipeapp.model.Result<CategorResponse>
     {
         if (response.isSuccessful)
@@ -189,6 +206,17 @@ class CategoryViewModel(private val app:Application, private val categoryReposit
             }
         }
         return com.example.recipeapp.model.Result.Error(message = "No Internet")
+    }
+
+    private fun handleRecipeIdResponse(response: Response<MealResponse>):com.example.recipeapp.model.Result<MealResponse>
+    {
+        if (response.isSuccessful)
+        {
+            response.body()?.let {
+                return com.example.recipeapp.model.Result.Success(it)
+            }
+        }
+        return com.example.recipeapp.model.Result.Error(message="No Network")
     }
 
     fun getIngredients(meal:MealData):String

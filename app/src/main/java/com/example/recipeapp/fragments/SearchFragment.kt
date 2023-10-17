@@ -2,6 +2,7 @@ package com.example.recipeapp.fragments
 
 import android.app.Application
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipeapp.MainActivity
 import com.example.recipeapp.R
+import com.example.recipeapp.activity.RecipeDetails
 import com.example.recipeapp.adapter.FilterAdapter
 import com.example.recipeapp.application.RecipeApplication
 import com.example.recipeapp.constants.Constant
@@ -36,10 +38,6 @@ class SearchFragment : Fragment() {
     private lateinit var filterAdapter: FilterAdapter
     private lateinit var progressDialog:ProgressDialog
 
-
-
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,7 +50,17 @@ class SearchFragment : Fragment() {
         viewModel=ViewModelProvider(this,viewModelFactory)[CategoryViewModel::class.java]
         viewModel=(activity as MainActivity).categoryViewModel
         progressDialog=ProgressDialog(requireContext())
+
         setUpRecyclerView()
+
+        filterAdapter.setOnItemClickListener {
+            val bundle=Bundle().apply {
+                putString("RecipeID",it.idMeal)
+            }
+            val intent=Intent(activity,RecipeDetails::class.java)
+            intent.putExtras(bundle)
+            startActivity(intent)
+        }
         var job:Job?=null
 
        binding.etSearchMeal.addTextChangedListener {

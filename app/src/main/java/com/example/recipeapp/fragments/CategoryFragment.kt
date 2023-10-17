@@ -52,7 +52,6 @@ class CategoryFragment : Fragment()
             {
                 is com.example.recipeapp.model.Result.Loading->
                 {
-
                     progressDialog.setMessage("Loading...")
                     progressDialog.setCancelable(false)
                     progressDialog.show()

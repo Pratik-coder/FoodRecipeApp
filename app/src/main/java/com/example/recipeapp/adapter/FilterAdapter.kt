@@ -13,7 +13,6 @@ import com.example.recipeapp.model.MealData
 class FilterAdapter:RecyclerView.Adapter<FilterAdapter.FilterViewHolder>()
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilterAdapter.FilterViewHolder {
-
         val binding= LayoutSearchlistBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return FilterViewHolder(binding)
     }
@@ -33,7 +32,17 @@ class FilterAdapter:RecyclerView.Adapter<FilterAdapter.FilterViewHolder>()
           {
               Glide.with(binding.root).load(mealData.strMealThumb).into(binding.ivSearchCategory)
               binding.tvSearchCategoryName.text=mealData.strMeal
+              binding.cardViewSearch.setOnClickListener {
+                  onItemClickListener?.let {it(mealData)}
+              }
           }
+    }
+
+    private var onItemClickListener:((MealData)->Unit)?=null
+
+    fun setOnItemClickListener(listener:(MealData)->Unit)
+    {
+        onItemClickListener=listener
     }
 
     private val differCallBack=object :DiffUtil.ItemCallback<MealData>()
