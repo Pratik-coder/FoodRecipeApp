@@ -7,8 +7,16 @@
         android:title="@string/str_category"/>
 
     <item
+        android:id="@+id/nav_area"
+        android:title="@string/str_area"/>
+
+    <item
         android:id="@+id/nav_random"
         android:title="@string/str_random"/>
+
+    <item
+        android:id="@+id/nav_ingredient"
+        android:title="@string/str_ingredient"/>
 
     <item
         android:id="@+id/nav_search"

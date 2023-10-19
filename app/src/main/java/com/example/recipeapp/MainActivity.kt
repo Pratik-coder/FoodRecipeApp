@@ -15,9 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipeapp.adapter.CategoryAdapter
 import com.example.recipeapp.databinding.ActivityMainBinding
-import com.example.recipeapp.fragments.CategoryFragment
-import com.example.recipeapp.fragments.RandomFragment
-import com.example.recipeapp.fragments.SearchFragment
+import com.example.recipeapp.fragments.*
 import com.example.recipeapp.model.CategoryData
 import com.example.recipeapp.repository.CategoryRepository
 import com.example.recipeapp.viewmodel.CategoryViewModel
@@ -63,9 +61,23 @@ class MainActivity : AppCompatActivity()
                      true
                  }
 
+                 R.id.nav_area->
+                 {
+                     fragment=AreaFragment()
+                     loadFragment(fragment)
+                     true
+                 }
+
                  R.id.nav_random->
                  {
                      fragment=RandomFragment()
+                     loadFragment(fragment)
+                     true
+                 }
+
+                 R.id.nav_ingredient->
+                 {
+                     fragment=IngredientFragment()
                      loadFragment(fragment)
                      true
                  }
@@ -80,26 +92,5 @@ class MainActivity : AppCompatActivity()
              }
          }
      }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 

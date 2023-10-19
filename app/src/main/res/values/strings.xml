@@ -11,6 +11,8 @@
     <string name="str_category">Category</string>
     <string name="str_random">Random</string>
     <string name="str_search">Search</string>
+    <string name="str_ingredient">Ingredient</string>
+    <string name="str_area">Area</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

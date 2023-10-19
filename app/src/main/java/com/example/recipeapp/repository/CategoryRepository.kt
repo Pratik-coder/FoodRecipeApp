@@ -7,9 +7,7 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.recipeapp.constants.Constant
-import com.example.recipeapp.model.CategorResponse
-import com.example.recipeapp.model.CategoryData
-import com.example.recipeapp.model.MealResponse
+import com.example.recipeapp.model.*
 import com.example.recipeapp.remoteapi.CategoryApi
 import com.example.recipeapp.retrofit.RetrofitClient
 import retrofit2.Call
@@ -37,6 +35,16 @@ class CategoryRepository
     suspend fun getRecipeDetailsById(strRecipeId:String):Response<MealResponse>
     {
         return RetrofitClient.getInstance().create(CategoryApi::class.java).getRecipeById(strRecipeId)
+    }
+
+    suspend fun getIngredientsList():Response<IngredientResponse>
+    {
+        return RetrofitClient.getInstance().create(CategoryApi::class.java).getAllIngredients()
+    }
+
+    suspend fun getAreaList():Response<AreaResponse>
+    {
+        return RetrofitClient.getInstance().create(CategoryApi::class.java).getAllAreas()
     }
 }
 

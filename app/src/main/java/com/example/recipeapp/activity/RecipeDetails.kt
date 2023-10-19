@@ -36,7 +36,7 @@ class RecipeDetails : AppCompatActivity() {
         if (receiveBundle!=null && receiveBundle.containsKey("RecipeID"))
         {
             val recipeId=receiveBundle.getString("RecipeID")
-            if (recipeId != null) {
+            if (recipeId!= null) {
                 viewModel.getRecipeDetails(recipeId)
             }
         }
