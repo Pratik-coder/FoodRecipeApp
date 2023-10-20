@@ -1,6 +1,7 @@
 package com.example.recipeapp.fragments
 
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,8 +13,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipeapp.MainActivity
 import com.example.recipeapp.R
+import com.example.recipeapp.activity.FilterActivity
 import com.example.recipeapp.adapter.IngredientAdapter
 import com.example.recipeapp.databinding.FragmentIngredientBinding
+import com.example.recipeapp.model.QueryType
 import com.example.recipeapp.repository.CategoryRepository
 import com.example.recipeapp.viewmodel.CategoryViewModel
 import com.example.recipeapp.viewmodel.CategoryViewModelFactory
@@ -47,6 +50,15 @@ class IngredientFragment : Fragment() {
         viewModel.getAllIngredientsList()
 
         setUpIngredientsRecycler()
+        ingredientAdapter.setOnItemClickListener {
+            val bundle=Bundle().apply {
+                putSerializable("Filter",
+                it.strIngredient.let {it1-> QueryType(strQueryType = "i", strQuery = it1)})
+            }
+            val intent=Intent(activity,FilterActivity::class.java)
+            intent.putExtras(bundle)
+            startActivity(intent)
+        }
 
         viewModel.ingredientsList.observe(viewLifecycleOwner, Observer {
             response->

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.recipeapp.databinding.LayoutCategorylistBinding
 import com.example.recipeapp.databinding.LayoutIngredientlistBinding
 import com.example.recipeapp.model.IngredientData
+import com.example.recipeapp.model.MealData
 
 class IngredientAdapter:RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>()
 {
@@ -30,20 +31,41 @@ class IngredientAdapter:RecyclerView.Adapter<IngredientAdapter.IngredientViewHol
 
     inner class IngredientViewHolder(val binding: LayoutIngredientlistBinding):RecyclerView.ViewHolder(binding.root)
     {
-        fun onBindData(ingredientData: IngredientData)
+        fun onBindData(mealData: MealData)
         {
-            binding.tvIngredientName.text=ingredientData.strIngredient
+
+             if (mealData.strIngredient!=null)
+             {
+                 binding.tvIngredientName.text=mealData.strIngredient
+             }
+
+            if(mealData.strArea!=null)
+            {
+                binding.tvIngredientName.text=mealData.strArea
+            }
+
+            binding.cardViewIngredient.setOnClickListener {
+                onItemClickListener?.let {it(mealData)}
+            }
         }
     }
 
-    val differCallBack=object :DiffUtil.ItemCallback<IngredientData>()
+    private var onItemClickListener:((MealData)->Unit)?=null
+
+    fun setOnItemClickListener(listener:(MealData)->Unit)
     {
-        override fun areItemsTheSame(oldItem: IngredientData, newItem: IngredientData): Boolean {
-              return oldItem.idIngredient==newItem.idIngredient
+        onItemClickListener=listener
+    }
+
+
+    val differCallBack=object :DiffUtil.ItemCallback<MealData>()
+    {
+        override fun areItemsTheSame(oldItem: MealData, newItem: MealData): Boolean {
+              return oldItem.idMeal==newItem.idMeal
         }
 
-        override fun areContentsTheSame(oldItem: IngredientData, newItem: IngredientData): Boolean {
-           return oldItem.idIngredient==newItem.idIngredient
+        override fun areContentsTheSame(oldItem: MealData, newItem: MealData): Boolean {
+           return oldItem==newItem
         }
     }
 

@@ -1,6 +1,7 @@
 package com.example.recipeapp.fragments
 
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,9 +13,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipeapp.MainActivity
 import com.example.recipeapp.R
-import com.example.recipeapp.adapter.AreaAdapter
+import com.example.recipeapp.activity.FilterActivity
+import com.example.recipeapp.adapter.IngredientAdapter
 import com.example.recipeapp.databinding.FragmentAreaBinding
 import com.example.recipeapp.databinding.FragmentRandomBinding
+import com.example.recipeapp.model.QueryType
 import com.example.recipeapp.repository.CategoryRepository
 import com.example.recipeapp.viewmodel.CategoryViewModel
 import com.example.recipeapp.viewmodel.CategoryViewModelFactory
@@ -24,7 +27,7 @@ class AreaFragment : Fragment() {
 
 private lateinit var binding: FragmentAreaBinding
 private lateinit var viewModel: CategoryViewModel
-private lateinit var areaAdapter: AreaAdapter
+private lateinit var ingredientAdapter: IngredientAdapter
 private lateinit var progressDialog: ProgressDialog
 
 
@@ -43,6 +46,15 @@ private lateinit var progressDialog: ProgressDialog
 
         viewModel.getAllAreaList()
         setUpRecyclerView()
+        ingredientAdapter.setOnItemClickListener {
+            val bundle=Bundle().apply {
+                putSerializable("Filter",
+                it.strArea?.let { it1->QueryType(strQueryType="a", strQuery = it1)})
+            }
+            val intent=Intent(activity,FilterActivity::class.java)
+            intent.putExtras(bundle)
+            startActivity(intent)
+        }
 
         viewModel.areaList.observe(viewLifecycleOwner, Observer {
             response->
@@ -59,7 +71,7 @@ private lateinit var progressDialog: ProgressDialog
                 {
                     progressDialog.dismiss()
                     response.data?.let {
-                        areaAdapter.differList.submitList(it.meals.toList())
+                        ingredientAdapter.differList.submitList(it.meals.toList())
                     }
                 }
 
@@ -77,9 +89,9 @@ private lateinit var progressDialog: ProgressDialog
 
     private fun setUpRecyclerView()
     {
-        areaAdapter= AreaAdapter()
+        ingredientAdapter= IngredientAdapter()
         binding.rvArea.apply {
-            adapter=areaAdapter
+            adapter=ingredientAdapter
             layoutManager=LinearLayoutManager(requireContext())
         }
     }

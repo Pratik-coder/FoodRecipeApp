@@ -3,6 +3,7 @@ package com.example.recipeapp.fragments
 import android.app.Activity
 import android.app.Application
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,9 +15,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipeapp.MainActivity
 import com.example.recipeapp.R
+import com.example.recipeapp.activity.FilterActivity
 import com.example.recipeapp.adapter.CategoryAdapter
 import com.example.recipeapp.application.RecipeApplication
 import com.example.recipeapp.databinding.FragmentCategoryBinding
+import com.example.recipeapp.model.QueryType
 import com.example.recipeapp.repository.CategoryRepository
 import com.example.recipeapp.viewmodel.CategoryViewModel
 import com.example.recipeapp.viewmodel.CategoryViewModelFactory
@@ -43,8 +46,19 @@ class CategoryFragment : Fragment()
         viewModel=(activity as MainActivity).categoryViewModel
         progressDialog=ProgressDialog(requireContext())
         viewModel.getCategories()
-
         setUpRecyclerView()
+
+        categoryAdapter.setOnItemClickListener {
+            val bundle=Bundle().apply {
+                putSerializable("Filter",
+                it.strCategory?.let { it1->QueryType(strQueryType = "c", strQuery = it1)})
+            }
+            val intent=Intent(activity,FilterActivity::class.java)
+            intent.putExtras(bundle)
+            startActivity(intent)
+        }
+
+
 
         viewModel.categoryList.observe(viewLifecycleOwner, Observer {
             response->

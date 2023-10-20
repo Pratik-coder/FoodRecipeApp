@@ -1,3 +1,4 @@
+/*
 package com.example.recipeapp.adapter
 
 import android.view.LayoutInflater
@@ -47,4 +48,4 @@ class AreaAdapter:RecyclerView.Adapter<AreaAdapter.AreaViewHolder>()
     }
 
     val differList=AsyncListDiffer(this,differCallBack)
-}
+}*/

@@ -52,7 +52,7 @@ class FilterAdapter:RecyclerView.Adapter<FilterAdapter.FilterViewHolder>()
         }
 
         override fun areContentsTheSame(oldItem: MealData, newItem: MealData): Boolean {
-           return oldItem.idMeal==newItem.idMeal
+           return oldItem==newItem
         }
     }
 

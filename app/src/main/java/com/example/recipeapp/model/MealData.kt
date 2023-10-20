@@ -214,4 +214,5 @@ data class MealData(
 
     @SerializedName("dateModified")
     @Expose
-    val dateModified:Any?)
+    val dateModified:Any?,
+    val strIngredient:String)

@@ -37,14 +37,39 @@ class CategoryRepository
         return RetrofitClient.getInstance().create(CategoryApi::class.java).getRecipeById(strRecipeId)
     }
 
-    suspend fun getIngredientsList():Response<IngredientResponse>
+    /*suspend fun getIngredientsList():Response<IngredientResponse>
+    {
+        return RetrofitClient.getInstance().create(CategoryApi::class.java).getAllIngredients()
+    }*/
+
+    suspend fun getIngredientsList():Response<FilterResponse>
     {
         return RetrofitClient.getInstance().create(CategoryApi::class.java).getAllIngredients()
     }
 
-    suspend fun getAreaList():Response<AreaResponse>
+  /*  suspend fun getAreaList():Response<AreaResponse>
     {
         return RetrofitClient.getInstance().create(CategoryApi::class.java).getAllAreas()
+    }*/
+
+    suspend fun getAreaList():Response<FilterResponse>
+    {
+        return RetrofitClient.getInstance().create(CategoryApi::class.java).getAllAreas()
+    }
+
+    suspend fun getIngredientByFilter(strIngredient:String):Response<FilterResponse>
+    {
+        return RetrofitClient.getInstance().create(CategoryApi::class.java).getFilterByIngredient(strIngredient)
+    }
+
+    suspend fun getAreaByFilter(strArea:String):Response<FilterResponse>
+    {
+        return RetrofitClient.getInstance().create(CategoryApi::class.java).getFilterByArea(strArea)
+    }
+
+    suspend fun getCategoryByFilter(strCategory:String):Response<FilterResponse>
+    {
+        return RetrofitClient.getInstance().create(CategoryApi::class.java).getFilterByCategory(strCategory)
     }
 }
 
