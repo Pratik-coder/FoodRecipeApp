@@ -14,12 +14,16 @@ import com.example.recipeapp.model.MealResponse
 import com.example.recipeapp.repository.CategoryRepository
 import com.example.recipeapp.viewmodel.CategoryViewModel
 import com.example.recipeapp.viewmodel.CategoryViewModelFactory
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 class RecipeDetails : AppCompatActivity() {
 
     private lateinit var binding:ActivityRecipeDetailsBinding
     private lateinit var viewModel: CategoryViewModel
     private lateinit var progressDialog: ProgressDialog
+    private lateinit var youTubePlayerView: YouTubePlayerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,5 +82,19 @@ class RecipeDetails : AppCompatActivity() {
         binding.mealText.text=mealData?.strMeal
         binding.recipeIngredient.text=mealData?.let {viewModel.getIngredients(it)}
         binding.recipeInstruction.text=mealData?.strInstructions
+
+        youTubePlayerView=binding.youtubePlayerView
+        lifecycle.addObserver(youTubePlayerView)
+        youTubePlayerView.addYouTubePlayerListener(object :AbstractYouTubePlayerListener()
+        {
+            override fun onReady(youTubePlayer: YouTubePlayer) {
+               val videoId=mealData?.let { viewModel.getRecipeVideoId(it)}
+               youTubePlayer.pause()
+               if (videoId!=null)
+               {
+                   youTubePlayer.cueVideo(videoId,0f)
+               }
+            }
+        })
     }
 }

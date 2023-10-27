@@ -7,6 +7,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.service.autofill.FieldClassification.Match
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -20,6 +21,8 @@ import com.example.recipeapp.repository.CategoryRepository
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 
 class CategoryViewModel(private val app:Application, private val categoryRepository: CategoryRepository): AndroidViewModel(app)
@@ -390,6 +393,28 @@ class CategoryViewModel(private val app:Application, private val categoryReposit
             }
         }
         return com.example.recipeapp.model.Result.Error(message = "No Network")
+    }
+
+    fun getRecipeVideoId(meal: MealData):String?
+    {
+        val videoUrl=meal.strYoutube?.trim()
+        val expression=
+            "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*"
+
+        if (videoUrl==null || videoUrl.trim{it <= ' '}.isEmpty())
+        {
+            return null
+        }
+        val pattern:Pattern=Pattern.compile(expression)
+        val matcher: Matcher =pattern.matcher(videoUrl)
+
+        try {
+            if (matcher.find()) return matcher.group()
+        }catch (ex:ArrayIndexOutOfBoundsException)
+        {
+            ex.printStackTrace()
+        }
+         return null
     }
 
     fun getIngredients(meal:MealData):String

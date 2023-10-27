@@ -19,6 +19,9 @@ import com.example.recipeapp.model.MealData
 import com.example.recipeapp.repository.CategoryRepository
 import com.example.recipeapp.viewmodel.CategoryViewModel
 import com.example.recipeapp.viewmodel.CategoryViewModelFactory
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 // TODO: Rename parameter arguments, choose names that match
 
@@ -32,6 +35,7 @@ class RandomFragment : Fragment() {
     private lateinit var binding: FragmentRandomBinding
     private lateinit var viewModel: CategoryViewModel
     private lateinit var progressDialog:ProgressDialog
+    private lateinit var youTubePlayerView:YouTubePlayerView
 
 
 
@@ -55,7 +59,6 @@ class RandomFragment : Fragment() {
             {
                 is com.example.recipeapp.model.Result.Loading->
                 {
-                       // progressDialog=ProgressDialog(requireContext())
                         progressDialog.setMessage("Loading...")
                         progressDialog.setCancelable(false)
                         progressDialog.show()
@@ -64,7 +67,6 @@ class RandomFragment : Fragment() {
 
                 is com.example.recipeapp.model.Result.Success->
                 {
-                  //  progressDialog=ProgressDialog(requireContext())
                     progressDialog.dismiss()
                     response.data?.let {
                         val recipe=it.meals?.get(0)
@@ -74,7 +76,6 @@ class RandomFragment : Fragment() {
 
                 is com.example.recipeapp.model.Result.Error->
                 {
-                  //  progressDialog=ProgressDialog(requireContext())
                     progressDialog.dismiss()
                     response.message?.let {
                         Toast.makeText(requireContext(),"An Error Occurred",Toast.LENGTH_SHORT).show()
@@ -91,5 +92,19 @@ class RandomFragment : Fragment() {
         binding.mealText.text=mealData?.strMeal
         binding.recipeIngredient.text=mealData?.let { viewModel .getIngredients(it)}
         binding.recipeInstruction.text=mealData?.strInstructions
+
+        youTubePlayerView=binding.youtubePlayerView
+        lifecycle.addObserver(youTubePlayerView)
+        youTubePlayerView.addYouTubePlayerListener(object :AbstractYouTubePlayerListener()
+        {
+            override fun onReady(youTubePlayer: YouTubePlayer) {
+                val videoId=mealData?.let {viewModel.getRecipeVideoId(it)}
+                youTubePlayer.pause()
+                if (videoId!=null)
+                {
+                    youTubePlayer.cueVideo(videoId,0f)
+                }
+            }
+        })
     }
 }
