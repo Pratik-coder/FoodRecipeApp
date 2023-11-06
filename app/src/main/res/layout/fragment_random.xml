@@ -31,6 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:lineSpacingExtra="8dp"
                 android:textSize="32sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"

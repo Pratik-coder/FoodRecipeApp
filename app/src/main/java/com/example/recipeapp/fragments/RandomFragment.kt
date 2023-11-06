@@ -3,6 +3,7 @@ package com.example.recipeapp.fragments
 import android.app.Application
 import android.app.ProgressDialog
 import android.os.Bundle
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.example.recipeapp.MainActivity
 import com.example.recipeapp.R
 import com.example.recipeapp.application.RecipeApplication
+import com.example.recipeapp.constants.Constant
 import com.example.recipeapp.databinding.FragmentRandomBinding
 import com.example.recipeapp.model.MealData
 import com.example.recipeapp.repository.CategoryRepository
@@ -22,6 +24,10 @@ import com.example.recipeapp.viewmodel.CategoryViewModelFactory
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 
@@ -36,6 +42,7 @@ class RandomFragment : Fragment() {
     private lateinit var viewModel: CategoryViewModel
     private lateinit var progressDialog:ProgressDialog
     private lateinit var youTubePlayerView:YouTubePlayerView
+    var job: Job?=null
 
 
 
@@ -100,9 +107,18 @@ class RandomFragment : Fragment() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 val videoId=mealData?.let {viewModel.getRecipeVideoId(it)}
                 youTubePlayer.pause()
-                if (videoId!=null)
+                if (!videoId.isNullOrEmpty())
                 {
-                    youTubePlayer.cueVideo(videoId,0f)
+                    val handler=Handler()
+                    handler.postDelayed({
+                        youTubePlayer.cueVideo(videoId,0f)
+                     //   binding.youtubePlayerView.visibility=View.VISIBLE
+                    },5000)
+                }
+                else
+                {
+                    binding.youtubePlayerView.visibility=View.GONE
+                    Toast.makeText(requireContext(),"Oops !! Video not available for this recipe",Toast.LENGTH_SHORT).show()
                 }
             }
         })
