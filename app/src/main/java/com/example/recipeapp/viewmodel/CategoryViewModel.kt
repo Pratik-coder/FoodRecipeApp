@@ -28,7 +28,7 @@ import java.util.regex.Pattern
 class CategoryViewModel(private val app:Application, private val categoryRepository: CategoryRepository): AndroidViewModel(app)
 {
     val categoryList=MutableLiveData<com.example.recipeapp.model.Result<CategorResponse>>()
-    val randomRecipe=MutableLiveData<com.example.recipeapp.model.Result<MealResponse>>()
+    val randomRecipe=MutableLiveData<com.example.recipeapp.model.Result<MealResponse>?>()
     val searchRecipeList=MutableLiveData<com.example.recipeapp.model.Result<MealResponse>>()
     val recipeDeatils=MutableLiveData<com.example.recipeapp.model.Result<MealResponse>>()
     val ingredientsList=MutableLiveData<com.example.recipeapp.model.Result<FilterResponse>>()
@@ -397,6 +397,10 @@ class CategoryViewModel(private val app:Application, private val categoryReposit
 
     fun getRecipeVideoId(meal: MealData):String?
     {
+        if (meal!=null)
+        {
+            clearRandomRecipeData()
+        }
         val videoUrl=meal.strYoutube?.trim()
        /* val expression=
             "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*"
@@ -522,5 +526,10 @@ class CategoryViewModel(private val app:Application, private val categoryReposit
             ingredients=ingredients+ " "+meal.strMeasure20+ " "+meal.strIngredient20+" \n"
         }
         return ingredients
+    }
+
+    fun clearRandomRecipeData()
+    {
+        randomRecipe.value=null
     }
 }

@@ -1,5 +1,6 @@
 package com.example.recipeapp.fragments
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.app.ProgressDialog
 import android.os.Bundle
@@ -42,7 +43,8 @@ class RandomFragment : Fragment() {
     private lateinit var viewModel: CategoryViewModel
     private lateinit var progressDialog:ProgressDialog
     private lateinit var youTubePlayerView:YouTubePlayerView
-    var job: Job?=null
+    private var isYouTubeInitialized=false
+
 
 
 
@@ -58,6 +60,7 @@ class RandomFragment : Fragment() {
         viewModel=ViewModelProvider(this,viewModelFactory)[CategoryViewModel::class.java]
         viewModel=(activity as MainActivity).categoryViewModel
         progressDialog=ProgressDialog(requireContext())
+
         viewModel.getRandomRecipes()
 
         viewModel.randomRecipe.observe(viewLifecycleOwner, Observer {
@@ -88,6 +91,7 @@ class RandomFragment : Fragment() {
                         Toast.makeText(requireContext(),"An Error Occurred",Toast.LENGTH_SHORT).show()
                     }
                 }
+                else->{}
             }
         })
         return view
@@ -97,7 +101,7 @@ class RandomFragment : Fragment() {
     {
         Glide.with(binding.root).load(mealData?.strMealThumb).into(binding.mealImage)
         binding.mealText.text=mealData?.strMeal
-        binding.recipeIngredient.text=mealData?.let { viewModel .getIngredients(it)}
+        binding.recipeIngredient.text=mealData?.let { viewModel.getIngredients(it)}
         binding.recipeInstruction.text=mealData?.strInstructions
 
         youTubePlayerView=binding.youtubePlayerView
@@ -105,22 +109,65 @@ class RandomFragment : Fragment() {
         youTubePlayerView.addYouTubePlayerListener(object :AbstractYouTubePlayerListener()
         {
             override fun onReady(youTubePlayer: YouTubePlayer) {
-                val videoId=mealData?.let {viewModel.getRecipeVideoId(it)}
-                youTubePlayer.pause()
-                if (!videoId.isNullOrEmpty())
-                {
-                    val handler=Handler()
-                    handler.postDelayed({
-                        youTubePlayer.cueVideo(videoId,0f)
-                     //   binding.youtubePlayerView.visibility=View.VISIBLE
-                    },5000)
-                }
-                else
-                {
-                    binding.youtubePlayerView.visibility=View.GONE
-                    Toast.makeText(requireContext(),"Oops !! Video not available for this recipe",Toast.LENGTH_SHORT).show()
+                if (!isYouTubeInitialized) {
+                    val videoId = mealData?.let { viewModel.getRecipeVideoId(it)}
+                    youTubePlayer.pause()
+                    if (!videoId.isNullOrEmpty()) {
+                        val handler = Handler()
+                        handler.postDelayed({
+                            youTubePlayer.cueVideo(videoId, 0f)
+                            isYouTubeInitialized=true
+                        }, 6000)
+                    } else {
+                        binding.youtubePlayerView.visibility = View.GONE
+                        Toast.makeText(
+                            requireContext(),
+                            "Oops !! Video not available for this recipe",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
         })
+    }
+
+    /*private fun getRandomRecipeData()
+    {
+        viewModel.randomRecipe.observe(viewLifecycleOwner, Observer {
+                response->
+            when(response)
+            {
+                is com.example.recipeapp.model.Result.Loading->
+                {
+                    progressDialog.setMessage("Loading...")
+                    progressDialog.setCancelable(false)
+                    progressDialog.show()
+
+                }
+
+                is com.example.recipeapp.model.Result.Success->
+                {
+                    progressDialog.dismiss()
+                    response.data?.let {
+                        val recipe=it.meals?.get(0)
+                        setRecipeData(recipe)
+                    }
+                }
+
+                is com.example.recipeapp.model.Result.Error->
+                {
+                    progressDialog.dismiss()
+                    response.message?.let {
+                        Toast.makeText(requireContext(),"An Error Occurred",Toast.LENGTH_SHORT).show()
+                    }
+                }
+                else->{}
+            }
+        })
+    }*/
+
+    override fun onResume() {
+        super.onResume()
+       viewModel.getRandomRecipes()
     }
 }
