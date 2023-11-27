@@ -27,13 +27,13 @@ import java.util.regex.Pattern
 
 class CategoryViewModel(private val app:Application, private val categoryRepository: CategoryRepository): AndroidViewModel(app)
 {
-    val categoryList=MutableLiveData<com.example.recipeapp.model.Result<CategorResponse>>()
-    val randomRecipe=MutableLiveData<com.example.recipeapp.model.Result<MealResponse>?>()
-    val searchRecipeList=MutableLiveData<com.example.recipeapp.model.Result<MealResponse>>()
-    val recipeDeatils=MutableLiveData<com.example.recipeapp.model.Result<MealResponse>>()
-    val ingredientsList=MutableLiveData<com.example.recipeapp.model.Result<FilterResponse>>()
-    val areaList=MutableLiveData<com.example.recipeapp.model.Result<FilterResponse>>()
-    val filtersByList=MutableLiveData<com.example.recipeapp.model.Result<FilterResponse>>()
+    val categoryList=MutableLiveData<Result<CategorResponse>>()
+    val randomRecipe=MutableLiveData<Result<MealResponse>?>()
+    val searchRecipeList=MutableLiveData<Result<MealResponse>>()
+    val recipeDeatils=MutableLiveData<Result<MealResponse>>()
+    val ingredientsList=MutableLiveData<Result<FilterResponse>>()
+    val areaList=MutableLiveData<Result<FilterResponse>>()
+    val filtersByList=MutableLiveData<Result<FilterResponse>>()
 
 
 
@@ -76,7 +76,7 @@ class CategoryViewModel(private val app:Application, private val categoryReposit
 
      private suspend fun getAllCategory()
      {
-         categoryList.postValue(com.example.recipeapp.model.Result.Loading())
+         categoryList.postValue(Result.Loading())
          try {
                      if(hasInternetConnection())
                      {
@@ -85,22 +85,22 @@ class CategoryViewModel(private val app:Application, private val categoryReposit
                      }
              else
                      {
-                         categoryList.postValue(com.example.recipeapp.model.Result.Error(message = "No Internet Connection"))
+                         categoryList.postValue(Result.Error(message = "No Internet Connection"))
                      }
          }
          catch (t:Throwable)
          {
              when(t)
              {
-                 is IOException ->categoryList.postValue(com.example.recipeapp.model.Result.Error(message = "Network Failure"))
-                 else->categoryList.postValue(com.example.recipeapp.model.Result.Error(message = "Error"))
+                 is IOException ->categoryList.postValue(Result.Error(message = "Network Failure"))
+                 else->categoryList.postValue(Result.Error(message = "Error"))
              }
          }
      }
 
     private suspend fun getRecipeData()
     {
-        randomRecipe.postValue(com.example.recipeapp.model.Result.Loading())
+        randomRecipe.postValue(Result.Loading())
         try {
                if (hasInternetConnection())
                {
@@ -109,22 +109,22 @@ class CategoryViewModel(private val app:Application, private val categoryReposit
                }
             else
                {
-                   randomRecipe.postValue(com.example.recipeapp.model.Result.Error(message = "Please check your internet"))
+                   randomRecipe.postValue(Result.Error(message = "Please check your internet"))
                }
         }
         catch (t:Throwable)
         {
             when(t)
             {
-                is IOException->randomRecipe.postValue(com.example.recipeapp.model.Result.Error(message = "No Internet"))
-                else->    randomRecipe.postValue(com.example.recipeapp.model.Result.Error(message = "An Unexpected Error Occurred"))
+                is IOException->randomRecipe.postValue(Result.Error(message = "No Internet"))
+                else->    randomRecipe.postValue(Result.Error(message = "An Unexpected Error Occurred"))
             }
         }
     }
 
     private suspend fun getRecipeByFilter(searchQuery:String)
     {
-        searchRecipeList.postValue(com.example.recipeapp.model.Result.Loading())
+        searchRecipeList.postValue(Result.Loading())
         try {
             if (hasInternetConnection())
             {
@@ -133,22 +133,22 @@ class CategoryViewModel(private val app:Application, private val categoryReposit
             }
             else
             {
-                searchRecipeList.postValue(com.example.recipeapp.model.Result.Error(message = "No Internet"))
+                searchRecipeList.postValue(Result.Error(message = "No Internet"))
             }
         }
         catch (t:Throwable)
         {
             when(t)
             {
-                is IOException->searchRecipeList.postValue(com.example.recipeapp.model.Result.Error(message = "Check your internet"))
-                else->    searchRecipeList.postValue(com.example.recipeapp.model.Result.Error(message = "An Unexpected Error Occurred"))
+                is IOException->searchRecipeList.postValue(Result.Error(message = "Check your internet"))
+                else->    searchRecipeList.postValue(Result.Error(message = "An Unexpected Error Occurred"))
             }
         }
     }
 
     private suspend fun getIngredientByFilter(strIngredient:String)
     {
-        filtersByList.postValue(com.example.recipeapp.model.Result.Loading())
+        filtersByList.postValue(Result.Loading())
         try {
             if (hasInternetConnection())
             {
@@ -157,22 +157,22 @@ class CategoryViewModel(private val app:Application, private val categoryReposit
             }
             else
             {
-                filtersByList.postValue(com.example.recipeapp.model.Result.Error(message = "No Internet"))
+                filtersByList.postValue(Result.Error(message = "No Internet"))
             }
         }
         catch (t:Throwable)
         {
             when(t)
             {
-                is IOException->filtersByList.postValue(com.example.recipeapp.model.Result.Error(message = "Check your internet"))
-                else->    filtersByList.postValue(com.example.recipeapp.model.Result.Error(message = "An Unexpected Error Occurred"))
+                is IOException->filtersByList.postValue(Result.Error(message = "Check your internet"))
+                else->    filtersByList.postValue(Result.Error(message = "An Unexpected Error Occurred"))
             }
         }
     }
 
     private suspend fun getAreaByFilter(strArea:String)
     {
-        filtersByList.postValue(com.example.recipeapp.model.Result.Loading())
+        filtersByList.postValue(Result.Loading())
         try {
             if (hasInternetConnection())
             {
@@ -181,22 +181,22 @@ class CategoryViewModel(private val app:Application, private val categoryReposit
             }
             else
             {
-               filtersByList.postValue(com.example.recipeapp.model.Result.Error(message = "No Internet"))
+               filtersByList.postValue(Result.Error(message = "No Internet"))
             }
         }
         catch (t:Throwable)
         {
             when(t)
             {
-                is IOException->filtersByList.postValue(com.example.recipeapp.model.Result.Error(message = "Check your internet"))
-                else->   filtersByList.postValue(com.example.recipeapp.model.Result.Error(message = "An Unexpected Error Occurred"))
+                is IOException->filtersByList.postValue(Result.Error(message = "Check your internet"))
+                else->   filtersByList.postValue(Result.Error(message = "An Unexpected Error Occurred"))
             }
         }
     }
 
     private suspend fun getCategoryByFilter(strCategory:String)
     {
-        filtersByList.postValue(com.example.recipeapp.model.Result.Loading())
+        filtersByList.postValue(Result.Loading())
         try {
             if (hasInternetConnection())
             {
@@ -205,22 +205,22 @@ class CategoryViewModel(private val app:Application, private val categoryReposit
             }
             else
             {
-                filtersByList.postValue(com.example.recipeapp.model.Result.Error(message = "No Internet"))
+                filtersByList.postValue(Result.Error(message = "No Internet"))
             }
         }
         catch (t:Throwable)
         {
             when(t)
             {
-                is IOException->filtersByList.postValue(com.example.recipeapp.model.Result.Error(message = "Check your internet"))
-                else->   filtersByList.postValue(com.example.recipeapp.model.Result.Error(message = "An Unexpected Error Occurred"))
+                is IOException->filtersByList.postValue(Result.Error(message = "Check your internet"))
+                else->   filtersByList.postValue(Result.Error(message = "An Unexpected Error Occurred"))
             }
         }
     }
 
     private suspend fun getRecipeById(strRecipeId:String)
     {
-        recipeDeatils.postValue(com.example.recipeapp.model.Result.Loading())
+        recipeDeatils.postValue(Result.Loading())
         try {
              if (hasInternetConnection())
              {
@@ -229,22 +229,22 @@ class CategoryViewModel(private val app:Application, private val categoryReposit
              }
             else
              {
-                 recipeDeatils.postValue(com.example.recipeapp.model.Result.Error(message = "No Network"))
+                 recipeDeatils.postValue(Result.Error(message = "No Network"))
              }
         }
         catch (t:Throwable)
         {
             when(t)
             {
-                is IOException->recipeDeatils.postValue(com.example.recipeapp.model.Result.Error(message = "Network Error"))
-                else->recipeDeatils.postValue(com.example.recipeapp.model.Result.Error(message = "An Unexpected Error"))
+                is IOException->recipeDeatils.postValue(Result.Error(message = "Network Error"))
+                else->recipeDeatils.postValue(Result.Error(message = "An Unexpected Error"))
             }
         }
     }
 
     private suspend fun getIngredients()
     {
-        ingredientsList.postValue(com.example.recipeapp.model.Result.Loading())
+        ingredientsList.postValue(Result.Loading())
         try {
              if (hasInternetConnection())
              {
@@ -253,22 +253,22 @@ class CategoryViewModel(private val app:Application, private val categoryReposit
              }
             else
              {
-                 ingredientsList.postValue(com.example.recipeapp.model.Result.Error(message = "No Internet"))
+                 ingredientsList.postValue(Result.Error(message = "No Internet"))
              }
         }
         catch (t:Throwable)
         {
             when(t)
             {
-                is IOException->ingredientsList.postValue(com.example.recipeapp.model.Result.Error(message = "No Network"))
-                else->ingredientsList.postValue(com.example.recipeapp.model.Result.Error(message = "An Unexpected Error Occurred"))
+                is IOException->ingredientsList.postValue(Result.Error(message = "No Network"))
+                else->ingredientsList.postValue(Result.Error(message = "An Unexpected Error Occurred"))
             }
         }
     }
 
     private suspend fun getAreas()
     {
-        areaList.postValue(com.example.recipeapp.model.Result.Loading())
+        areaList.postValue(Result.Loading())
         try {
             if (hasInternetConnection())
             {
@@ -277,15 +277,15 @@ class CategoryViewModel(private val app:Application, private val categoryReposit
             }
             else
             {
-                areaList.postValue(com.example.recipeapp.model.Result.Error(message = "No Internet"))
+                areaList.postValue(Result.Error(message = "No Internet"))
             }
         }
         catch (t:Throwable)
         {
             when(t)
             {
-                is IOException->areaList.postValue(com.example.recipeapp.model.Result.Error(message = "No Network"))
-                else->areaList.postValue(com.example.recipeapp.model.Result.Error(message = "An Unexpected Error Occurred"))
+                is IOException->areaList.postValue(Result.Error(message = "No Network"))
+                else->areaList.postValue(Result.Error(message = "An Unexpected Error Occurred"))
             }
         }
     }
@@ -318,81 +318,81 @@ class CategoryViewModel(private val app:Application, private val categoryReposit
         return false
     }
 
-    private fun handleCategoryResponse(response:Response<CategorResponse>):com.example.recipeapp.model.Result<CategorResponse>
+    private fun handleCategoryResponse(response:Response<CategorResponse>):Result<CategorResponse>
     {
         if (response.isSuccessful)
         {
             response.body()?.let {
-                return com.example.recipeapp.model.Result.Success(it)
+                return Result.Success(it)
             }
         }
-        return com.example.recipeapp.model.Result.Error(message = response.message())
+        return Result.Error(message = response.message())
     }
 
-    private fun handleRandomResponse(response: Response<MealResponse>):com.example.recipeapp.model.Result<MealResponse>
+    private fun handleRandomResponse(response: Response<MealResponse>):Result<MealResponse>
     {
         if (response.isSuccessful)
         {
             response.body()?.let {
-                return com.example.recipeapp.model.Result.Success(it)
+                return Result.Success(it)
             }
         }
-        return com.example.recipeapp.model.Result.Error(message = "No Network")
+        return Result.Error(message = "No Network")
     }
 
-    private fun handleSearchResponse(response: Response<MealResponse>):com.example.recipeapp.model.Result<MealResponse>
+    private fun handleSearchResponse(response: Response<MealResponse>):Result<MealResponse>
     {
         if (response.isSuccessful)
         {
             response.body()?.let {
-                return com.example.recipeapp.model.Result.Success(it)
+                return Result.Success(it)
             }
         }
-        return com.example.recipeapp.model.Result.Error(message = "No Internet")
+        return Result.Error(message = "No Internet")
     }
 
-    private fun handleIngredientByFilterResponse(response: Response<FilterResponse>):com.example.recipeapp.model.Result<FilterResponse>
+    private fun handleIngredientByFilterResponse(response: Response<FilterResponse>):Result<FilterResponse>
     {
         if (response.isSuccessful)
         {
             response.body()?.let {
-                return com.example.recipeapp.model.Result.Success(it)
+                return Result.Success(it)
             }
         }
-        return com.example.recipeapp.model.Result.Error(message = "No Internet")
+        return Result.Error(message = "No Internet")
     }
 
-    private fun handleRecipeIdResponse(response: Response<MealResponse>):com.example.recipeapp.model.Result<MealResponse>
+    private fun handleRecipeIdResponse(response: Response<MealResponse>):Result<MealResponse>
     {
         if (response.isSuccessful)
         {
             response.body()?.let {
-                return com.example.recipeapp.model.Result.Success(it)
+                return Result.Success(it)
             }
         }
-        return com.example.recipeapp.model.Result.Error(message="No Network")
+        return Result.Error(message="No Network")
     }
 
-    private fun handleIngredientListResponse(/*response: Response<IngredientResponse>*/response: Response<FilterResponse>):com.example.recipeapp.model.Result<FilterResponse>
+    private fun handleIngredientListResponse(/*response: Response<IngredientResponse>*/response: Response<FilterResponse>):Result<FilterResponse>
     {
        if (response.isSuccessful)
        {
            response.body()?.let {
-               return com.example.recipeapp.model.Result.Success(it)
+               return Result.Success(it)
            }
        }
-        return com.example.recipeapp.model.Result.Error(message = "No Network")
+        return Result.Error(message = "No Network")
     }
 
-    private fun handleAreaListResponse(/*response: Response<AreaResponse>*/response:Response<FilterResponse>):com.example.recipeapp.model.Result<FilterResponse>
+    private fun handleAreaListResponse(/*response: Response<AreaResponse>*/response:Response<FilterResponse>):Result<FilterResponse>
     {
         if (response.isSuccessful)
         {
             response.body()?.let {
-                return com.example.recipeapp.model.Result.Success(it)
+                return Result.Success(it)
             }
         }
-        return com.example.recipeapp.model.Result.Error(message = "No Network")
+        return Result.Error(message = "No Network")
     }
 
     fun getRecipeVideoId(meal: MealData):String?
