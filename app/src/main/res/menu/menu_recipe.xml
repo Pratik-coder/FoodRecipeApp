@@ -4,22 +4,27 @@
 
     <item
         android:id="@+id/nav_category"
-        android:title="@string/str_category"/>
+        android:title="@string/str_category"
+        android:icon="@drawable/ic_baseline_restaurant_menu_24"/>
 
     <item
         android:id="@+id/nav_area"
-        android:title="@string/str_area"/>
+        android:title="@string/str_area"
+        android:icon="@drawable/ic_baseline_location_on_24"/>
 
     <item
         android:id="@+id/nav_random"
-        android:title="@string/str_random"/>
+        android:title="@string/str_random"
+        android:icon="@drawable/ic_baseline_sync_24"/>
 
     <item
         android:id="@+id/nav_ingredient"
-        android:title="@string/str_ingredient"/>
+        android:title="@string/str_ingredient"
+        android:icon="@drawable/ic_baseline_fastfood_24"/>
 
     <item
         android:id="@+id/nav_search"
-        android:title="@string/str_search"/>
+        android:title="@string/str_search"
+        android:icon="@drawable/ic_baseline_search_24"/>
 
 </menu>
